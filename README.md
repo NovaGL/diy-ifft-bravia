@@ -1,4 +1,4 @@
-# DIY IFTTT for Harmony
+# DIY IFTTT for Bravia
 IFTTT Bravia commands for Google Assistant and Alexa
 
 This is a DIY Bravia project to allow Alexa or Googgle Assistant to control any TV button press on your Bravia TV.
