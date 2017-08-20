@@ -75,10 +75,10 @@ What we want to do with ifttt is to create a trigger using either Alexa or Googl
 Choose what you want to say. (If you have multiple rooms, it's best to include the room name in the command) 
 
 It really doesn't matter what you choose for the action, choose something that is easy for you to remember.
-For a list of commands refer to the JSON file in this repo.
+For a list of commands refer to bravia-commands.json. This application will only send actions to the TV that match commands in this file.
 #is for number $ is for text
 
-### "Say a phrase with a text ingredient" (Selecting channel by name)
+### "Say a phrase with a text ingredient" (Press TV Button)
 
 Title| Action
 ------------ | -------------
