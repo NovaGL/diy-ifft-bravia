@@ -1,0 +1,105 @@
+[{
+		"id": "93ac3ab9.dbd768",
+		"type": "tab",
+		"label": "Bravia Commands",
+		"disabled": false,
+		"info": ""
+	}, {
+		"id": "3df527e9.3032d8",
+		"type": "http in",
+		"z": "93ac3ab9.dbd768",
+		"name": "Bravia Commands",
+		"url": "/bravia",
+		"method": "post",
+		"upload": false,
+		"swaggerDoc": "",
+		"x": 130,
+		"y": 80,
+		"wires": [["64bdf179.91ab3"]]
+	}, {
+		"id": "4a546b3b.0011cc",
+		"type": "function",
+		"z": "93ac3ab9.dbd768",
+		"name": "Set Command",
+		"func": "msg.headers = {\n    \"Content-Type\": \"text/xml;charset=UTF-8\",\n    \"SOAPAction\": \"\\\"urn:schemas-sony-com:service:IRCC:1#X_SendIRCC\\\"\",\n    \"X-Auth-PSK\": msg.payload.pin,\n    \"User-Agent\": \"TVSideView/2.0.1 CFNetwork/672.0.8Darwin/14.0.0\"\n};\n\n\nmsg.method = \"POST\";\nmsg.url = \"http://\" + msg.payload.tv_ip +\"/sony/IRCC\";\n\nif (msg.payload.command && msg.payload.type==\"TVCommand\") {\n    msg.payload = \n    \"<?xml version=\\\"1.0\\\"?>\" +\n    \"<s:Envelope xmlns:s=\\\"http:\\/\\/schemas.xmlsoap.org\\/soap\\/envelope\\/\\\" s:encodingStyle=\\\"http:\\/\\/schemas.xmlsoap.org\\/soap\\/encoding\\/\\\">\" +\n     \"<s:Body>\" +\n            \"<u:X_SendIRCC xmlns:u=\\\"urn:schemas-sony-com:service:IRCC:1\\\">\" +\n                \"<IRCCCode>\" + msg.payload.command +\"<\\/IRCCCode>\" +\n            \"<\\/u:X_SendIRCC>\" +\n        \"<\\/s:Body>\" +\n    \"<\\/s:Envelope>\";\n    \n    return msg;\n}",
+		"outputs": 1,
+		"noerr": 0,
+		"x": 584.1166687011719,
+		"y": 80.11669921875,
+		"wires": [["9c712de.2d1eed"]]
+	}, {
+		"id": "9c712de.2d1eed",
+		"type": "http request",
+		"z": "93ac3ab9.dbd768",
+		"name": "Send to TV",
+		"method": "use",
+		"ret": "txt",
+		"url": "",
+		"tls": "",
+		"x": 774.1166687011719,
+		"y": 79.11669921875,
+		"wires": [[]]
+	}, {
+		"id": "64bdf179.91ab3",
+		"type": "change",
+		"z": "93ac3ab9.dbd768",
+		"name": "Get Bravia Command",
+		"rules": [{
+				"t": "set",
+				"p": "bravia",
+				"pt": "msg",
+				"to": "bravia",
+				"tot": "flow"
+			}, {
+				"t": "set",
+				"p": "payload.command",
+				"pt": "msg",
+				"to": "bravia[name=$uppercase($$.payload.command)].value",
+				"tot": "jsonata"
+			}
+		],
+		"action": "",
+		"property": "",
+		"from": "",
+		"to": "",
+		"reg": false,
+		"x": 365.1166687011719,
+		"y": 80.11669921875,
+		"wires": [["4a546b3b.0011cc"]]
+	}, {
+		"id": "83b1902d.d1c82",
+		"type": "change",
+		"z": "93ac3ab9.dbd768",
+		"name": "Store TV Commands",
+		"rules": [{
+				"t": "move",
+				"p": "payload",
+				"pt": "msg",
+				"to": "bravia",
+				"tot": "flow"
+			}
+		],
+		"action": "",
+		"property": "",
+		"from": "",
+		"to": "",
+		"reg": false,
+		"x": 300,
+		"y": 20,
+		"wires": [[]]
+	}, {
+		"id": "d8b04bf4.09bce8",
+		"type": "inject",
+		"z": "93ac3ab9.dbd768",
+		"name": "Bravia",
+		"topic": "",
+		"payload": "[{\"name\":\"NUMBER 1\",\"value\":\"AAAAAQAAAAEAAAAAAw==\"},{\"name\":\"NUMBER 2\",\"value\":\"AAAAAQAAAAEAAAABAw==\"},{\"name\":\"NUMBER 3\",\"value\":\"AAAAAQAAAAEAAAACAw==\"},{\"name\":\"NUMBER 4\",\"value\":\"AAAAAQAAAAEAAAADAw==\"},{\"name\":\"NUMBER 5\",\"value\":\"AAAAAQAAAAEAAAAEAw==\"},{\"name\":\"NUMBER 6\",\"value\":\"AAAAAQAAAAEAAAAFAw==\"},{\"name\":\"NUMBER 7\",\"value\":\"AAAAAQAAAAEAAAAGAw==\"},{\"name\":\"NUMBER 8\",\"value\":\"AAAAAQAAAAEAAAAHAw==\"},{\"name\":\"NUMBER 9\",\"value\":\"AAAAAQAAAAEAAAAIAw==\"},{\"name\":\"NUMBER 0\",\"value\":\"AAAAAQAAAAEAAAAJAw==\"},{\"name\":\"NUMBER 11\",\"value\":\"AAAAAQAAAAEAAAAKAw==\"},{\"name\":\"NUMBER 12\",\"value\":\"AAAAAQAAAAEAAAALAw==\"},{\"name\":\"ENTER\",\"value\":\"AAAAAQAAAAEAAAALAw==\"},{\"name\":\"GUIDE\",\"value\":\"AAAAAQAAAAEAAAAOAw==\"},{\"name\":\"CHANNEL UP\",\"value\":\"AAAAAQAAAAEAAAAQAw==\"},{\"name\":\"CHANNEL DOWN\",\"value\":\"AAAAAQAAAAEAAAARAw==\"},{\"name\":\"VOLUME UP\",\"value\":\"AAAAAQAAAAEAAAASAw==\"},{\"name\":\"VOLUME DOWN\",\"value\":\"AAAAAQAAAAEAAAATAw==\"},{\"name\":\"MUTE\",\"value\":\"AAAAAQAAAAEAAAAUAw==\"},{\"name\":\"POWER\",\"value\":\"AAAAAQAAAAEAAAAVAw==\"},{\"name\":\"POWER ON\",\"value\":\"AAAAAQAAAAEAAAAVAw==\"},{\"name\":\"ON\",\"value\":\"AAAAAQAAAAEAAAAVAw==\"},{\"name\":\"POWER TOGGLE\",\"value\":\"AAAAAQAAAAEAAAAVAw==\"},{\"name\":\"AUDIO\",\"value\":\"AAAAAQAAAAEAAAAXAw==\"},{\"name\":\"MEDIA AUDIO TRACK\",\"value\":\"AAAAAQAAAAEAAAAXAw==\"},{\"name\":\"TV INPUT\",\"value\":\"AAAAAQAAAAEAAAAkAw==\"},{\"name\":\"INPUT\",\"value\":\"AAAAAQAAAAEAAAAlAw==\"},{\"name\":\"INPUT TV\",\"value\":\"AAAAAQAAAAEAAAAlAw==\"},{\"name\":\"TVANTENNACABLE\",\"value\":\"AAAAAQAAAAEAAAAqAw==\"},{\"name\":\"WAKE UP\",\"value\":\"AAAAAQAAAAEAAAAuAw==\"},{\"name\":\"POWER OFF\",\"value\":\"AAAAAQAAAAEAAAAvAw==\"},{\"name\":\"OFF\",\"value\":\"AAAAAQAAAAEAAAAvAw==\"},{\"name\":\"SLEEP\",\"value\":\"AAAAAQAAAAEAAAAvAw==\"},{\"name\":\"RIGHT\",\"value\":\"AAAAAQAAAAEAAAAzAw==\"},{\"name\":\"LEFT\",\"value\":\"AAAAAQAAAAEAAAA0Aw==\"},{\"name\":\"SLEEP TIMER\",\"value\":\"AAAAAQAAAAEAAAA2Aw==\"},{\"name\":\"ANALOG 2\",\"value\":\"AAAAAQAAAAEAAAA4Aw==\"},{\"name\":\"TV ANALOG\",\"value\":\"AAAAAQAAAAEAAAA4Aw==\"},{\"name\":\"DISPLAY\",\"value\":\"AAAAAQAAAAEAAAA6Aw==\"},{\"name\":\"JUMP\",\"value\":\"AAAAAQAAAAEAAAA7Aw==\"},{\"name\":\"PICOFF\",\"value\":\"AAAAAQAAAAEAAAA+Aw==\"},{\"name\":\"PICTUREOFF\",\"value\":\"AAAAAQAAAAEAAAA+Aw==\"},{\"name\":\"TELETEXT\",\"value\":\"AAAAAQAAAAEAAAA/Aw==\"},{\"name\":\"VIDEO 1\",\"value\":\"AAAAAQAAAAEAAABAAw==\"},{\"name\":\"VIDEO 2\",\"value\":\"AAAAAQAAAAEAAABBAw==\"},{\"name\":\"ANALOG RGB 1\",\"value\":\"AAAAAQAAAAEAAABDAw==\"},{\"name\":\"HOME\",\"value\":\"AAAAAQAAAAEAAABgAw==\"},{\"name\":\"EXIT\",\"value\":\"AAAAAQAAAAEAAABjAw==\"},{\"name\":\"PICTURE MODE\",\"value\":\"AAAAAQAAAAEAAABkAw==\"},{\"name\":\"CONFIRM\",\"value\":\"AAAAAQAAAAEAAABlAw==\"},{\"name\":\"UP\",\"value\":\"AAAAAQAAAAEAAAB0Aw==\"},{\"name\":\"DOWN\",\"value\":\"AAAAAQAAAAEAAAB1Aw==\"},{\"name\":\"CLOSED CAPTION\",\"value\":\"AAAAAgAAAKQAAAAQAw==\"},{\"name\":\"COMPONENT 1\",\"value\":\"AAAAAgAAAKQAAAA2Aw==\"},{\"name\":\"COMPONENT 2\",\"value\":\"AAAAAgAAAKQAAAA3Aw==\"},{\"name\":\"WIDE\",\"value\":\"AAAAAgAAAKQAAAA9Aw==\"},{\"name\":\"EPG\",\"value\":\"AAAAAgAAAKQAAABbAw==\"},{\"name\":\"PAP\",\"value\":\"AAAAAgAAAKQAAAB3Aw==\"},{\"name\":\"TENKEY\",\"value\":\"AAAAAgAAAJcAAAAMAw==\"},{\"name\":\"BSCS\",\"value\":\"AAAAAgAAAJcAAAAQAw==\"},{\"name\":\"DDATA\",\"value\":\"AAAAAgAAAJcAAAAVAw==\"},{\"name\":\"STOP\",\"value\":\"AAAAAgAAAJcAAAAYAw==\"},{\"name\":\"PAUSE\",\"value\":\"AAAAAgAAAJcAAAAZAw==\"},{\"name\":\"PLAY\",\"value\":\"AAAAAgAAAJcAAAAaAw==\"},{\"name\":\"REWIND\",\"value\":\"AAAAAgAAAJcAAAAbAw==\"},{\"name\":\"FORWARD\",\"value\":\"AAAAAgAAAJcAAAAcAw==\"},{\"name\":\"DOT\",\"value\":\"AAAAAgAAAJcAAAAdAw==\"},{\"name\":\"REC\",\"value\":\"AAAAAgAAAJcAAAAgAw==\"},{\"name\":\"RETURN\",\"value\":\"AAAAAgAAAJcAAAAjAw==\"},{\"name\":\"BLUE\",\"value\":\"AAAAAgAAAJcAAAAkAw==\"},{\"name\":\"RED\",\"value\":\"AAAAAgAAAJcAAAAlAw==\"},{\"name\":\"GREEN\",\"value\":\"AAAAAgAAAJcAAAAmAw==\"},{\"name\":\"YELLOW\",\"value\":\"AAAAAgAAAJcAAAAnAw==\"},{\"name\":\"SUBTITLE\",\"value\":\"AAAAAgAAAJcAAAAoAw==\"},{\"name\":\"CS\",\"value\":\"AAAAAgAAAJcAAAArAw==\"},{\"name\":\"BS\",\"value\":\"AAAAAgAAAJcAAAAsAw==\"},{\"name\":\"DIGITAL\",\"value\":\"AAAAAgAAAJcAAAAyAw==\"},{\"name\":\"OPTIONS\",\"value\":\"AAAAAgAAAJcAAAA2Aw==\"},{\"name\":\"MEDIA\",\"value\":\"AAAAAgAAAJcAAAA4Aw==\"},{\"name\":\"PREVIOUS\",\"value\":\"AAAAAgAAAJcAAAA8Aw==\"},{\"name\":\"NEXT\",\"value\":\"AAAAAgAAAJcAAAA9Aw==\"},{\"name\":\"DPADCENTER\",\"value\":\"AAAAAgAAAJcAAABKAw==\"},{\"name\":\"CURSOR UP\",\"value\":\"AAAAAgAAAJcAAABPAw==\"},{\"name\":\"CURSOR DOWN\",\"value\":\"AAAAAgAAAJcAAABQAw==\"},{\"name\":\"CURSOR LEFT\",\"value\":\"AAAAAgAAAJcAAABNAw==\"},{\"name\":\"CURSOR RIGHT\",\"value\":\"AAAAAgAAAJcAAABOAw==\"},{\"name\":\"SHOPREMOTECONTROLFORCEDDYNAMIC\",\"value\":\"AAAAAgAAAJcAAABqAw==\"},{\"name\":\"FLASH PLUS\",\"value\":\"AAAAAgAAAJcAAAB4Aw==\"},{\"name\":\"FLASH MINUS\",\"value\":\"AAAAAgAAAJcAAAB5Aw==\"},{\"name\":\"AUDIO QUALIT YMODE\",\"value\":\"AAAAAgAAAJcAAAB7Aw==\"},{\"name\":\"DEMOMODE\",\"value\":\"AAAAAgAAAJcAAAB8Aw==\"},{\"name\":\"ANALOG\",\"value\":\"AAAAAgAAAHcAAAANAw==\"},{\"name\":\"MODE3D\",\"value\":\"AAAAAgAAAHcAAABNAw==\"},{\"name\":\"DIGITAL TOGGLE\",\"value\":\"AAAAAgAAAHcAAABSAw==\"},{\"name\":\"DEMOSURROUND\",\"value\":\"AAAAAgAAAHcAAAB7Aw==\"},{\"name\":\"*AD\",\"value\":\"AAAAAgAAABoAAAA7Aw==\"},{\"name\":\"AUDIO MIXUP\",\"value\":\"AAAAAgAAABoAAAA8Aw==\"},{\"name\":\"AUDIO MIXDOWN\",\"value\":\"AAAAAgAAABoAAAA9Aw==\"},{\"name\":\"PHOTO FRAME\",\"value\":\"AAAAAgAAABoAAABVAw==\"},{\"name\":\"TV_RADIO\",\"value\":\"AAAAAgAAABoAAABXAw==\"},{\"name\":\"SYNCMENU\",\"value\":\"AAAAAgAAABoAAABYAw==\"},{\"name\":\"HDMI 1\",\"value\":\"AAAAAgAAABoAAABaAw==\"},{\"name\":\"HDMI 2\",\"value\":\"AAAAAgAAABoAAABbAw==\"},{\"name\":\"HDMI 3\",\"value\":\"AAAAAgAAABoAAABcAw==\"},{\"name\":\"HDMI 4\",\"value\":\"AAAAAgAAABoAAABdAw==\"},{\"name\":\"INPUT HDMI 1\",\"value\":\"AAAAAgAAABoAAABaAw==\"},{\"name\":\"INPUT HDMI 2\",\"value\":\"AAAAAgAAABoAAABbAw==\"},{\"name\":\"INPUT HDMI 3\",\"value\":\"AAAAAgAAABoAAABcAw==\"},{\"name\":\"INPUT HDMI 4\",\"value\":\"AAAAAgAAABoAAABdAw==\"},{\"name\":\"INPUT HDMI for\",\"value\":\"AAAAAgAAABoAAABdAw==\"},{\"name\":\"HDMI for\",\"value\":\"AAAAAgAAABoAAABdAw==\"},{\"name\":\"TOP MENU\",\"value\":\"AAAAAgAAABoAAABgAw==\"},{\"name\":\"POPUP MENU\",\"value\":\"AAAAAgAAABoAAABhAw==\"},{\"name\":\"ONE TOUCH TIME REC\",\"value\":\"AAAAAgAAABoAAABkAw==\"},{\"name\":\"ONE TOUCH VIEW\",\"value\":\"AAAAAgAAABoAAABlAw==\"},{\"name\":\"DUX\",\"value\":\"AAAAAgAAABoAAABzAw==\"},{\"name\":\"FOOTBALL MODE\",\"value\":\"AAAAAgAAABoAAAB2Aw==\"},{\"name\":\"IMANUAL\",\"value\":\"AAAAAgAAABoAAAB7Aw==\"},{\"name\":\"NETFLIX\",\"value\":\"AAAAAgAAABoAAAB8Aw==\"},{\"name\":\"ASSISTS\",\"value\":\"AAAAAgAAAMQAAAA7Aw==\"},{\"name\":\"FEATUREDAPP\",\"value\":\"AAAAAgAAAMQAAABEAw==\"},{\"name\":\"FEATUREDAPPVOD\",\"value\":\"AAAAAgAAAMQAAABFAw==\"},{\"name\":\"GOOGLE PLAY\",\"value\":\"AAAAAgAAAMQAAABGAw==\"},{\"name\":\"ACTION MENU\",\"value\":\"AAAAAgAAAMQAAABLAw==\"},{\"name\":\"HELP\",\"value\":\"AAAAAgAAAMQAAABNAw==\"},{\"name\":\"TVSATELLITE\",\"value\":\"AAAAAgAAAMQAAABOAw==\"},{\"name\":\"WIRELESSSUBWOOFER\",\"value\":\"AAAAAgAAAMQAAAB+Aw==\"}]",
+		"payloadType": "json",
+		"repeat": "",
+		"crontab": "",
+		"once": true,
+		"x": 110,
+		"y": 20,
+		"wires": [["83b1902d.d1c82"]]
+	}
+]

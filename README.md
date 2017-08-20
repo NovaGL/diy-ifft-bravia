@@ -111,7 +111,7 @@ tv_ip | The static ip of your TV
 On the next step give it a descriptive name and save.
 
 ## Node-Red Flow
-Once you have Node-Red up and running. Copy harmony-ifft.json to clipboard.
+Once you have Node-Red up and running. Copy bravia-ifttt.json to clipboard.
 
 **Menu > Clipboard > Import > paste the example and press deploy.**
 
